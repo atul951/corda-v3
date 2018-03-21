@@ -29,7 +29,7 @@ import javax.ws.rs.core.Response
 
 
 val CORP_NAME = CordaX500Name(organisation = "BCS Learning", locality = "Sydney", country = "AU")
-internal val NOTARY_NAME = CordaX500Name(organisation = "Turicum Notary Service", locality = "Zurich", country = "CH", commonName="corda.notary.validating")
+internal val NOTARY_NAME = CordaX500Name(organisation =  "Turicum Notary Service", locality = "Zurich", country = "CH")
 internal val BOD_NAME = CordaX500Name(organisation = "Bank of Atul", locality = "Delhi", country = "IN")
 private var whitelistedIssuers: Set<CordaX500Name> = emptySet()
 
@@ -94,7 +94,7 @@ class AtulIssueRequest(val thought: String, val issuer: Party) : FlowLogic<Signe
     override val progressTracker = ProgressTracker()
     @Suspendable
     override fun call(): SignedTransaction {
-        val notary = serviceHub.networkMapCache.getNotary(NOTARY_NAME) ?: throw FlowException("Could not find the trusted Turicum Notary node.")
+        val notary = serviceHub.networkMapCache.notaryIdentities[0] ?: throw FlowException("Could not find the trusted Turicum Notary node.")
         val selfID = serviceHub.myInfo.legalIdentities[0]
 
         val issueTxBuilder = AtulContract.generateIssue(thought, issuer, selfID, notary)
@@ -140,7 +140,7 @@ class AtulMoveRequest(val atul: StateAndRef<AtulState>, val newOwner: Party) : F
     override val progressTracker = ProgressTracker()
     @Suspendable
     override fun call(): SignedTransaction {
-        val notary = serviceHub.networkMapCache.getNotary(NOTARY_NAME) ?: throw FlowException("Could not find Turicum Notary node.")
+        val notary = serviceHub.networkMapCache.notaryIdentities[0] ?: throw FlowException("Could not find Turicum Notary node.")
 
         val txBuilder = TransactionBuilder(notary=notary)
         AtulContract.generateMove(txBuilder, atul, newOwner)
