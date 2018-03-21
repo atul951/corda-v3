@@ -29,7 +29,7 @@ import javax.ws.rs.core.Response
 
 
 val CORP_NAME = CordaX500Name(organisation = "BCS Learning", locality = "Sydney", country = "AU")
-internal val NOTARY_NAME = CordaX500Name(organisation =  "Turicum Notary Service", locality = "Zurich", country = "CH")
+internal val NOTARY_NAME = CordaX500Name(organisation =  "Turicum Notary Service", locality = "Zurich", country = "CH", commonName="corda.notary.validating")
 internal val BOD_NAME = CordaX500Name(organisation = "Bank of Atul", locality = "Delhi", country = "IN")
 private var whitelistedIssuers: Set<CordaX500Name> = emptySet()
 
