@@ -27,7 +27,7 @@ app.controller('DemoAppController', function($http, $location, $uibModal) {
     const demoApp = this;
 
     // We identify the node.
-    const apiBaseURL = "/api/example/";
+    const apiBaseURL = "/api/template/";
     let peers = [];
 
     $http.get(apiBaseURL + "me").then((response) => demoApp.thisNode = response.data.me);
@@ -40,6 +40,7 @@ app.controller('DemoAppController', function($http, $location, $uibModal) {
             controller: 'ModalInstanceCtrl',
             controllerAs: 'modalInstance',
             resolve: {
+
                 demoApp: () => demoApp,
                 apiBaseURL: () => apiBaseURL,
                 peers: () => peers
@@ -53,7 +54,6 @@ app.controller('DemoAppController', function($http, $location, $uibModal) {
         .then((response) => demoApp.ious = Object.keys(response.data)
             .map((key) => response.data[key].state.data)
             .reverse());
-
     demoApp.getIOUs();
 });
 
@@ -105,7 +105,7 @@ app.controller('ModalInstanceCtrl', function ($http, $location, $uibModalInstanc
 
     // Validate the IOU.
     function invalidFormInput() {
-        return isNaN(modalInstance.form.value) || (modalInstance.form.counterparty === undefined);
+        return (modalInstance.form.counterparty === undefined);
     }
 });
 

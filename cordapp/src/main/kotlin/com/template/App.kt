@@ -134,7 +134,7 @@ class AtulIssueResponse(val counterpartySession: FlowSession) : FlowLogic<Unit>(
     subFlow(signTransactionFlow)
 }
 }
-
+/*
 @InitiatingFlow
 @StartableByRPC
 class AtulMoveRequest(val atul: StateAndRef<AtulState>, val newOwner: Party) : FlowLogic<SignedTransaction>() {
@@ -183,7 +183,7 @@ class AtulMoveResponse(val counterpartySession: FlowSession) : FlowLogic<Unit>()
     }
 }
 
-
+*/
 
 // Serialization whitelist.
 class TemplateSerializationWhitelist : SerializationWhitelist {
