@@ -29,7 +29,7 @@ import javax.ws.rs.core.Response
 
 
 val CORP_NAME = CordaX500Name(organisation = "BCS Learning", locality = "Sydney", country = "AU")
-internal val NOTARY_NAME = CordaX500Name(organisation =  "Turicum Notary Service", locality = "Zurich", country = "CH", commonName="corda.notary.validating")
+internal val NOTARY_NAME = CordaX500Name(organisation =  "Turicum Notary Service", locality = "Zurich", country = "CH")
 internal val BOD_NAME = CordaX500Name(organisation = "Bank of Atul", locality = "Delhi", country = "IN")
 private var whitelistedIssuers: Set<CordaX500Name> = emptySet()
 
@@ -37,7 +37,7 @@ private var whitelistedIssuers: Set<CordaX500Name> = emptySet()
 // * API Endpoints *
 // *****************
 @Path("template")
-class TemplateApi(val rpcOps: CordaRPCOps) {
+class ExampleApi(val rpcOps: CordaRPCOps) {
     // Accessible at /api/template/templateGetEndpoint.
     @GET
     @Path("templateGetEndpoint")
@@ -94,9 +94,10 @@ class AtulIssueRequest(val thought: String, val issuer: Party) : FlowLogic<Signe
     override val progressTracker = ProgressTracker()
     @Suspendable
     override fun call(): SignedTransaction {
-        val notary = serviceHub.networkMapCache.notaryIdentities[0] ?: throw FlowException("Could not find the trusted Turicum Notary node.")
+        val notary = serviceHub.networkMapCache.getNotary(NOTARY_NAME) ?: throw FlowException("Could not find the trusted Turicum Notary node.")
+      //  logger.info(notary.toString())
         val selfID = serviceHub.myInfo.legalIdentities[0]
-
+      //  logger.info(selfID.toString())
         val issueTxBuilder = AtulContract.generateIssue(thought, issuer, selfID, notary)
 
         val bankSession = initiateFlow(issuer)
@@ -140,7 +141,7 @@ class AtulMoveRequest(val atul: StateAndRef<AtulState>, val newOwner: Party) : F
     override val progressTracker = ProgressTracker()
     @Suspendable
     override fun call(): SignedTransaction {
-        val notary = serviceHub.networkMapCache.notaryIdentities[0] ?: throw FlowException("Could not find Turicum Notary node.")
+        val notary = serviceHub.networkMapCache.getNotary(NOTARY_NAME) ?: throw FlowException("Could not find Turicum Notary node.")
 
         val txBuilder = TransactionBuilder(notary=notary)
         AtulContract.generateMove(txBuilder, atul, newOwner)
@@ -183,20 +184,6 @@ class AtulMoveResponse(val counterpartySession: FlowSession) : FlowLogic<Unit>()
 }
 
 
-// ***********
-// * Plugins *
-// ***********
-
-class TemplateWebPlugin : WebServerPluginRegistry {
-    // A list of classes that expose web JAX-RS REST APIs.
-    override val webApis: List<Function<CordaRPCOps, out Any>> = listOf(Function(::TemplateApi))
-    //A list of directories in the resources directory that will be served by Jetty under /web.
-    // This template's web frontend is accessible at /web/template.
-    override val staticServeDirs: Map<String, String> = mapOf(
-            // This will serve the templateWeb directory in resources to /web/template
-            "template" to javaClass.classLoader.getResource("templateWeb").toExternalForm()
-    )
-}
 
 // Serialization whitelist.
 class TemplateSerializationWhitelist : SerializationWhitelist {
@@ -206,4 +193,4 @@ class TemplateSerializationWhitelist : SerializationWhitelist {
 
 // This class is not annotated with @CordaSerializable, so it must be added to the serialization whitelist, above, if
 // we want to send it to other nodes within a flow.
-//data class TemplateData(val payload: String)
+data class TemplateData(val payload: String)
