@@ -118,8 +118,8 @@ private class restController(private val rpc: NodeRPCConnection,
 
         logger.info("Data is :"+data.toArray())
         val restTemplate = RestTemplate()
-        val curr = restTemplate.getForObject("http://"+data[0].split(":")[0]+":8081/api/template/mycurrency", currency::class.java)
-        val curr1 = restTemplate.getForObject("http://"+data[1].split(":")[0]+":8082/api/template/mycurrency", currency::class.java)
+        val curr = restTemplate.getForObject("http://"+data[0].split(":")[0]+":8080/api/template/mycurrency", currency::class.java)
+        val curr1 = restTemplate.getForObject("http://"+data[1].split(":")[0]+":8080/api/template/mycurrency", currency::class.java)
         logger.info(curr.toString())
         return listOf(curr,curr1)
     }
