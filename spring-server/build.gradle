@@ -78,10 +78,10 @@ task runBCSServer(type: JavaExec) {
     environment "server.port", "8081"
 }
 
-task runBODServer(type: JavaExec) {
+task runBOAServer(type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'com.template.server.ServerKt'
-    environment "server.port", "8082"
+    environment "server.port", "8080"
     environment "config.rpc.username", "user1"
     environment "config.rpc.password", "test"
     environment "config.rpc.host", "localhost"
