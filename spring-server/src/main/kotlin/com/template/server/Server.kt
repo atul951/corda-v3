@@ -10,7 +10,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
  */
 @SpringBootApplication
 @EnableSwagger2
-private class ServerStarter{}
+open class ServerStarter{}
 
 fun main(args: Array<String>){
     val app = SpringApplication(ServerStarter::class.java)

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.client.RestTemplate
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 
@@ -95,8 +96,36 @@ private class restController(private val rpc: NodeRPCConnection,
         ) }
     }
 
-}
 
+    /** Returns the currency offered*/
+    @GetMapping("/mycurrency", produces = ["application/json"])
+    private fun getvalue(): currency{
+        return currency("Bitcoin", myName, 458)
+    }
+
+    private fun getAddress(): ArrayList<String>{
+        val nodeInfo = rpc.proxy.networkMapSnapshot();
+        val data : ArrayList<String> = ArrayList()
+        for (item in nodeInfo){
+            data.add(item.addresses[0].toString())
+        }
+        return data
+    }
+
+    @GetMapping("/availablecurrency",produces = ["application/json"])
+    fun getcur(): List<currency>{
+        var data :ArrayList<String> = this.getAddress()
+
+        logger.info("Data is :"+data.toArray())
+        val restTemplate = RestTemplate()
+        val curr = restTemplate.getForObject("http://"+data[0].split(":")[0]+":8081/api/template/mycurrency", currency::class.java)
+        val curr1 = restTemplate.getForObject("http://"+data[1].split(":")[0]+":8082/api/template/mycurrency", currency::class.java)
+        logger.info(curr.toString())
+        return listOf(curr,curr1)
+    }
+
+}
+/*
 @Configuration
 //@EnableWebMvc
 @ComponentScan
@@ -105,8 +134,7 @@ class WebConfig : WebMvcConfigurerAdapter() {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry?) {
         registry!!.addResourceHandler("/**").addResourceLocations("/")
     }
-}
+}*/ */
 
-
-
+private data class currency(val currency: String, val name: CordaX500Name, val availableCurrency: Int)
 private data class IssueParams(val thought: String, val issuer: CordaX500Name)

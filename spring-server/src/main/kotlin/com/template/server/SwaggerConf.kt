@@ -12,9 +12,9 @@ import springfox.documentation.spring.web.plugins.Docket
 /**
  * Holder for Springfox's Swagger2 configuration.
  */
-
+/*
 @Configuration
-class SwaggerConf{
+open class SwaggerConf{
 
     @Bean
     fun api(): Docket {
@@ -25,17 +25,17 @@ class SwaggerConf{
                 .build()
     }
 
-    @Configuration
-    class swaggerStaticEndpoints : WebMvcConfigurerAdapter() {
-        override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-            //tyvm harrison
-            registry.addResourceHandler("swagger-ui.html")
-                    .addResourceLocations("classpath:/META-INF/resources/");
-
-            registry.addResourceHandler("/templateWeb/**")
-                    .addResourceLocations("classpath:/META-INF/resources/templateWeb/");
-
-        }
-    }
 
 }
+@Configuration
+open class swaggerStaticEndpoints : WebMvcConfigurerAdapter() {
+    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+        //tyvm harrison
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/templateWeb/**")
+                .addResourceLocations("classpath:/META-INF/resources/templateWeb/");
+
+    }
+}*/

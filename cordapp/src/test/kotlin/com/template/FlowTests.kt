@@ -5,7 +5,7 @@ import net.corda.testing.node.StartedMockNode
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-
+/*
 class FlowTests {
     lateinit var network: MockNetwork
     lateinit var a: StartedMockNode
@@ -31,4 +31,4 @@ class FlowTests {
     fun `dummy test`() {
 
     }
-}
+}*/
