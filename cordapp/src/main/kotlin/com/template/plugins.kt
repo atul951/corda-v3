@@ -1,5 +1,5 @@
 package com.template
-
+/*
 import net.corda.core.messaging.CordaRPCOps
 import net.corda.webserver.services.WebServerPluginRegistry
 import java.util.function.Function
@@ -18,4 +18,4 @@ class TemplateWebPlugin : WebServerPluginRegistry {
             // This will serve the templateWeb directory in resources to /web/template
             "template" to javaClass.classLoader.getResource("templateWeb").toExternalForm()
     )
-}
+}*/

@@ -32,7 +32,7 @@ val CORP_NAME = CordaX500Name(organisation = "BCS Learning", locality = "Sydney"
 internal val NOTARY_NAME = CordaX500Name(organisation =  "Turicum Notary Service", locality = "Zurich", country = "CH")
 internal val BOD_NAME = CordaX500Name(organisation = "Bank of Atul", locality = "Delhi", country = "IN")
 private var whitelistedIssuers: Set<CordaX500Name> = emptySet()
-
+/*
 // *****************
 // * API Endpoints *
 // *****************
@@ -47,7 +47,7 @@ class ExampleApi(val rpcOps: CordaRPCOps) {
     }
 }
 
-
+*/
 private fun getIssuerWhitelist(serviceHub: ServiceHub): Set<PublicKey> {
     if (whitelistedIssuers.isEmpty()) {
         val tempSet: MutableSet<CordaX500Name> = mutableSetOf()

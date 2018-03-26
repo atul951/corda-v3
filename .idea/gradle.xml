@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/cordapp" />
             <option value="$PROJECT_DIR$/cordapp-contracts-states" />
+            <option value="$PROJECT_DIR$/spring-server" />
           </set>
         </option>
       </GradleProjectSettings>

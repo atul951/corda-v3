@@ -1,5 +1,5 @@
 package com.template
-
+/*
 import net.corda.core.identity.CordaX500Name
 import net.corda.core.messaging.CordaRPCOps
 import net.corda.core.messaging.startTrackedFlow
@@ -87,4 +87,4 @@ class TemplateApi(private val rpcOps: CordaRPCOps) {
             Response.status(BAD_REQUEST).entity(ex.message!!).build()
         }
     }
-}
+}*/
