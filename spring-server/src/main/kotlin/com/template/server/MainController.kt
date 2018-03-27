@@ -97,7 +97,7 @@ private class restController(private val rpc: NodeRPCConnection,
     }
 
 
-    /** Returns the currency offered*/
+    /** Returns the currency offered by node*/
     @GetMapping("/mycurrency", produces = ["application/json"])
     private fun getvalue(): currency{
         return currency("Bitcoin", myName, 458)
@@ -112,16 +112,37 @@ private class restController(private val rpc: NodeRPCConnection,
         return data
     }
 
+    /** Returns All the available currencies */
     @GetMapping("/availablecurrency",produces = ["application/json"])
-    fun getcur(): List<currency>{
+    fun getcur(): ArrayList<currency>{
         var data :ArrayList<String> = this.getAddress()
 
-        logger.info("Data is :"+data.toArray())
+      //  var wire: List<Any>
         val restTemplate = RestTemplate()
-        val curr = restTemplate.getForObject("http://"+data[0].split(":")[0]+":8080/api/template/mycurrency", currency::class.java)
-        val curr1 = restTemplate.getForObject("http://"+data[1].split(":")[0]+":8080/api/template/mycurrency", currency::class.java)
+        val arr: ArrayList<currency> = ArrayList()
+        for (wire in data){
+            logger.info("########## Wire is : "+ wire)
+            //wire.toString()
+            var port  = "0"
+            if(wire.split(":")[1]=="10005"){
+                port = "8081"
+            }else if(wire.split(":")[1]=="10002"){
+                continue
+            }else{
+                port = "8082"
+            }
+
+
+            val curr = restTemplate.getForObject("http://"+wire.split(":")[0]+":"+port+"/api/template/mycurrency", currency::class.java)
+            arr.add(curr)
+        }
+        return arr
+     /*   logger.info("Data is :"+data.toArray())
+
+        val curr = restTemplate.getForObject("http://"+data[0].split(":")[0]+":8081/api/template/mycurrency", currency::class.java)
+        val curr1 = restTemplate.getForObject("http://"+data[1].split(":")[0]+":8082/api/template/mycurrency", currency::class.java)
         logger.info(curr.toString())
-        return listOf(curr,curr1)
+        return listOf(curr,curr1)*/
     }
 
 }
