@@ -32,7 +32,7 @@ private const val CONTROLLER_NAME = "config.controller.name"
 
 @RestController
 @RequestMapping("/api/template")
-private class restController(private val rpc: NodeRPCConnection,
+ class restController(private val rpc: NodeRPCConnection,
         @Value("\${config.rpc.port}") val rpcPort: Int,
         @Value("\${$CONTROLLER_NAME}") private val controllerName:String
     ){
@@ -57,7 +57,7 @@ private class restController(private val rpc: NodeRPCConnection,
      *  Request asset issuance
      */
     @PostMapping("'issue-asset-request", consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun issueAssetRequest(@RequestBody params: IssueParams): ResponseEntity<String>{
+    private fun issueAssetRequest(@RequestBody params: IssueParams): ResponseEntity<String>{
         val issuerX500 = params.issuer
         return try {
             val proxy = rpc.proxy
@@ -99,8 +99,8 @@ private class restController(private val rpc: NodeRPCConnection,
 
     /** Returns the currency offered by node*/
     @GetMapping("/mycurrency", produces = ["application/json"])
-    private fun getvalue(): currency{
-        return currency("Bitcoin", myName, 458)
+    private fun getvalue(): Currency{
+        return Currency("Bitcoin", myName, 458)
     }
 
     private fun getAddress(): ArrayList<String>{
@@ -114,12 +114,12 @@ private class restController(private val rpc: NodeRPCConnection,
 
     /** Returns All the available currencies */
     @GetMapping("/availablecurrency",produces = ["application/json"])
-    fun getcur(): ArrayList<currency>{
+    fun getcur(): ArrayList<Currency>{
         var data :ArrayList<String> = this.getAddress()
 
       //  var wire: List<Any>
         val restTemplate = RestTemplate()
-        val arr: ArrayList<currency> = ArrayList()
+        val arr: ArrayList<Currency> = ArrayList()
         for (wire in data){
             logger.info("########## Wire is : "+ wire)
             //wire.toString()
@@ -133,7 +133,7 @@ private class restController(private val rpc: NodeRPCConnection,
             }
 
 
-            val curr = restTemplate.getForObject("http://"+wire.split(":")[0]+":"+port+"/api/template/mycurrency", currency::class.java)
+            val curr = restTemplate.getForObject("http://"+wire.split(":")[0]+":"+port+"/api/template/mycurrency", Currency::class.java)
             arr.add(curr)
         }
         return arr
@@ -157,5 +157,5 @@ class WebConfig : WebMvcConfigurerAdapter() {
     }
 }*/ */
 
-private data class currency(val currency: String, val name: CordaX500Name, val availableCurrency: Int)
+data class Currency(val currency: String, val name: CordaX500Name, val availableCurrency: Int)
 private data class IssueParams(val thought: String, val issuer: CordaX500Name)
