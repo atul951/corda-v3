@@ -1,5 +1,6 @@
 package com.template
 
+import com.template.server.CONTROLLER_NAME
 import com.template.server.DemoController
 import com.template.server.NodeRPCConnection
 import com.template.server.restController
@@ -21,6 +22,7 @@ import org.omg.CORBA.Object
 import org.skyscreamer.jsonassert.JSONAssert
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -54,6 +56,11 @@ class mainControllerTest{
 
     @InjectMocks
     lateinit var demo : DemoController
+
+    @Autowired
+    private lateinit var rpc: NodeRPCConnection
+    @Value("\${config.rpc.port}") private var rpcPort: Int? = null
+    @Value("\${${CONTROLLER_NAME}}") private lateinit var controllerName: String
 
     @Test
     @Throws(Exception::class)

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*
 import net.corda.core.messaging.vaultQueryBy
 import java.time.LocalDateTime
 import net.corda.core.utilities.toBase64
+import org.springframework.beans.factory.annotation.Autowired
 import javax.enterprise.inject.Produces
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
@@ -24,7 +25,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc
 
 
 
-private const val CONTROLLER_NAME = "config.controller.name"
+public const val CONTROLLER_NAME = "config.controller.name"
 
 /**
  *  A controller for interacting with the node via RPC.
@@ -32,10 +33,13 @@ private const val CONTROLLER_NAME = "config.controller.name"
 
 @RestController
 @RequestMapping("/api/template")
- class restController(private val rpc: NodeRPCConnection,
-        @Value("\${config.rpc.port}") val rpcPort: Int,
-        @Value("\${$CONTROLLER_NAME}") private val controllerName:String
-    ){
+ class restController( ){
+
+
+    @Autowired
+    private lateinit var rpc: NodeRPCConnection
+    @Value("\${config.rpc.port}") private var rpcPort: Int? = null
+    @Value("\${$CONTROLLER_NAME}") lateinit var controllerName: String
 
     companion object {
         private val logger = LoggerFactory.getLogger(restController::class.java)
@@ -69,10 +73,6 @@ private const val CONTROLLER_NAME = "config.controller.name"
             logger.error("Issue Request Failed", e)
             ResponseEntity.status(HttpStatus.FORBIDDEN).build()
         }
-    }
-
-    fun hello() : String{
-        return "hello"
     }
 
     @GetMapping("/myname", produces = ["application/plain"])
