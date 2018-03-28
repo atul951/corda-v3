@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*
 import net.corda.core.messaging.vaultQueryBy
 import java.time.LocalDateTime
 import net.corda.core.utilities.toBase64
+import org.springframework.context.annotation.Bean
 import javax.enterprise.inject.Produces
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
@@ -33,9 +34,13 @@ private const val CONTROLLER_NAME = "config.controller.name"
 @RestController
 @RequestMapping("/api/template")
  class restController(private val rpc: NodeRPCConnection,
-        @Value("\${config.rpc.port}") val rpcPort: Int,
-        @Value("\${$CONTROLLER_NAME}") private val controllerName:String
+                      @Value("\${config.rpc.port}") val rpcPort: Int,
+                      @Value("\${$CONTROLLER_NAME}") private val controllerName:String
     ){
+
+    fun restController(){
+
+    }
 
     companion object {
         private val logger = LoggerFactory.getLogger(restController::class.java)
