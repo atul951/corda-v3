@@ -42,9 +42,6 @@ import kotlin.test.assertNull
 @RunWith(MockitoJUnitRunner::class)
 class mainControllerTest{
 
-//    @InjectMocks
-//    lateinit var restController: restController
-
 
 
     private val logger = LoggerFactory.getLogger(javaClass.name)
@@ -56,11 +53,6 @@ class mainControllerTest{
 
     @InjectMocks
     lateinit var demo : DemoController
-
-    @Autowired
-    private lateinit var rpc: NodeRPCConnection
-    @Value("\${config.rpc.port}") private var rpcPort: Int? = null
-    @Value("\${${CONTROLLER_NAME}}") private lateinit var controllerName: String
 
     @Test
     @Throws(Exception::class)

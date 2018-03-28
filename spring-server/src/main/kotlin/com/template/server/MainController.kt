@@ -54,7 +54,7 @@ public const val CONTROLLER_NAME = "config.controller.name"
 
     @GetMapping("/port", produces = [MediaType.TEXT_PLAIN_VALUE])
     fun getPort(): String{
-        return rpcPort.toString()
+        return rpcPort?.toString() ?: throw Exception("RPC Port not read")
     }
 
     /**
