@@ -71,11 +71,15 @@ private const val CONTROLLER_NAME = "config.controller.name"
         }
     }
 
+    fun hello() : String{
+        return "hello"
+    }
+
     @GetMapping("/myname", produces = ["application/plain"])
-    private fun muName() = myName.toString()
+    fun muName() = myName.toString()
 
     @GetMapping("peers", produces = ["application/json"])
-    private fun peersName(): Map<String, List<String>>{
+    fun peersName(): Map<String, List<String>>{
         val nodes = rpc.proxy.networkMapSnapshot()
         val nodesNames = nodes.map {it.legalIdentities.first().name}
         val filteredNodeName = nodesNames.filter { it.organisation !in listOf(controllerName, myName) }
